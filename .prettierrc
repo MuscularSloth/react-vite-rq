@@ -1,0 +1,9 @@
+{
+  "endOfLine": "auto",
+  "arrowParens": "always",
+  "bracketSpacing": false,
+  "jsxBracketSameLine": false,
+  "printWidth": 90,
+  "singleQuote": true,
+  "useTabs": false
+}
