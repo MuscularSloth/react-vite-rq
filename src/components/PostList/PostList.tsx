@@ -7,7 +7,7 @@ const PostList = () => {
     data: posts,
     isLoading,
     isError,
-  } = query('posts', fetchPostList, {
+  } = query(['posts'], fetchPostList, {
     enabled: true,
   });
 
