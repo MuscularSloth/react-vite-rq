@@ -1,21 +1,26 @@
 import {Link} from 'react-router-dom';
-import {PATHS} from '../../constants/paths.ts';
+import {pageNameByPath, PATHS, PathsKeys} from '../../constants/paths.ts';
+import {AppBar, Toolbar, Button} from '@mui/material';
 const NavMenu = () => {
+  const pages: PathsKeys[] = Object.keys(PATHS) as PathsKeys[];
+
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link to={PATHS.POST}>Posts</Link>
-          </li>
-          <li>
-            <Link to={PATHS.PAGINATED_POST}>Paginated Post</Link>
-          </li>
-          <li>
-            <Link to={PATHS.INFINITY_POST}>Infinity Posts</Link>
-          </li>
-        </ul>
-      </nav>
+      <AppBar position="static">
+        <Toolbar variant="dense">
+          {pages.map((page) => (
+            <Button
+              key={page}
+              component={Link}
+              to={PATHS[page]}
+              sx={{my: 2, color: 'white', display: 'block'}}
+              size="small"
+            >
+              {pageNameByPath[page]}
+            </Button>
+          ))}
+        </Toolbar>
+      </AppBar>
     </>
   );
 };

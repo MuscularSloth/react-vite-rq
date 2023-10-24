@@ -5,7 +5,6 @@ const GeneralLayout = () => {
   return (
     <>
       <NavMenu />
-      <hr />
       <Outlet />
     </>
   );

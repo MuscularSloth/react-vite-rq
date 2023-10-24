@@ -1,40 +1,37 @@
+import {Pagination} from '@mui/material';
+import React, {useEffect, useLayoutEffect} from 'react';
 import {useSearchParams} from 'react-router-dom';
 import PostList from '../../components/PostList/PostList.tsx';
 import {
-  PaginatedPost,
-  Post,
+  fetchPaginatedPostList,
   useRequestPosts,
 } from '../../helpers/axios/useRequestPosts.ts';
-import PostPagination from '../../components/PostPagination/PostPagination.tsx';
-import {axiosClient} from '../../helpers/axios/generalApiSettings.ts';
 
 const PaginationPostListPage = () => {
-  const [
-    searchParams,
-    //setSearchParams
-  ] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const limitSearchParams = Number(searchParams.get('_limit')) || 10;
+  const pageSearchParams = Number(searchParams.get('_page')) || 1;
 
-  const limit = Number(searchParams.get('_limit')) || 10;
-  const page = Number(searchParams.get('_page')) || 1;
+  const [page, setPage] = React.useState(pageSearchParams);
+  const [limit, setLimit] = React.useState(limitSearchParams);
 
-  console.log({limit, page});
+  useEffect(() => {
+    if (page !== pageSearchParams || limit !== limitSearchParams) {
+      setSearchParams({_limit: String(limit), _page: String(page)});
+    }
+  }, [limit, page, searchParams]);
 
-  const fetchPaginatedPostList = async (
-    _limit: number,
-    _page: number,
-  ): Promise<PaginatedPost> => {
-    const res = await axiosClient.get<Post[]>('/posts', {
-      params: {
-        _limit,
-        _page,
-      },
-    });
+  useLayoutEffect(() => {
+    if (page !== pageSearchParams) {
+      setPage(pageSearchParams);
+    }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const totalCount: number = res?.headers?.get('X-Total-Count');
-    return {posts: res.data, totalCount};
-  };
+    if (limit !== limitSearchParams) {
+      setLimit(limitSearchParams);
+    }
+  }, []);
+
+  // console.log({limit, page});
 
   const {query} = useRequestPosts();
 
@@ -48,17 +45,24 @@ const PaginationPostListPage = () => {
   );
 
   const {totalCount, posts} = data || {};
+  const totalPages = totalCount ? totalCount / limit : 1;
 
-  if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error :(</p>;
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
 
   return (
     <>
-      <PostList posts={posts} />
-      <PostPagination
-        currentPage={page}
-        totalPosts={totalCount ?? 0}
-        postPerPage={limit}
+      <PostList posts={posts} isLoading={isLoading} />
+      <Pagination
+        count={totalPages}
+        page={page}
+        onChange={handlePageChange}
+        size="small"
+        shape="rounded"
+        disabled={isLoading}
       />
     </>
   );
