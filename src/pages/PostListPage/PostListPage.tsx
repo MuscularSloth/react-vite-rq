@@ -1,5 +1,6 @@
 import PostList from '../../components/PostList/PostList.tsx';
-import {fetchPostList, useRequestPosts} from '../../helpers/axios/useRequestPosts.ts';
+import {fetchPostList} from '../../helpers/axios/fetchFunctions.ts';
+import {useRequestPosts} from '../../helpers/axios/useRequestPosts.ts';
 
 const PostListPage = () => {
   const {query} = useRequestPosts();

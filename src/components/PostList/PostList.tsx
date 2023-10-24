@@ -1,6 +1,6 @@
 import {Divider, List, ListItem, ListItemText, Skeleton} from '@mui/material';
 import React from 'react';
-import {Post} from '../../helpers/axios/useRequestPosts.ts';
+import {Post} from '../../helpers/axios/fetchFunctions.ts';
 
 type PostListProps = {
   posts?: Post[];
@@ -14,8 +14,8 @@ const PostList: React.FC<PostListProps> = ({posts, isLoading}) => {
 
     for (let i = 0; i < 10; i++) {
       placeholders.push(
-        <>
-          <ListItem key={i}>
+        <React.Fragment key={i}>
+          <ListItem>
             <ListItemText
               primary={<Skeleton variant="text" sx={{fontSize: '0.875rem'}} />}
               secondary={
@@ -30,7 +30,7 @@ const PostList: React.FC<PostListProps> = ({posts, isLoading}) => {
             />
           </ListItem>
           <Divider component="li" />
-        </>,
+        </React.Fragment>,
       );
     }
 
@@ -42,12 +42,12 @@ const PostList: React.FC<PostListProps> = ({posts, isLoading}) => {
   return (
     <List dense={true}>
       {posts?.map((post) => (
-        <>
-          <ListItem key={post.id}>
+        <React.Fragment key={post.id}>
+          <ListItem>
             <ListItemText primary={post.title} secondary={post.body} />
           </ListItem>
           <Divider component="li" />
-        </>
+        </React.Fragment>
       ))}
     </List>
   );

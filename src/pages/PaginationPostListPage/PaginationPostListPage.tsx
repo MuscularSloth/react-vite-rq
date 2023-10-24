@@ -2,10 +2,8 @@ import {Pagination} from '@mui/material';
 import React, {useEffect, useLayoutEffect} from 'react';
 import {useSearchParams} from 'react-router-dom';
 import PostList from '../../components/PostList/PostList.tsx';
-import {
-  fetchPaginatedPostList,
-  useRequestPosts,
-} from '../../helpers/axios/useRequestPosts.ts';
+import {fetchPaginatedPostList} from '../../helpers/axios/fetchFunctions.ts';
+import {useRequestPosts} from '../../helpers/axios/useRequestPosts.ts';
 
 const PaginationPostListPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,7 +33,7 @@ const PaginationPostListPage = () => {
 
   const {query} = useRequestPosts();
 
-  const {data, isLoading, isError} = query(
+  const {data, isLoading, isError, isFetching} = query(
     ['posts', limit, page],
     () => fetchPaginatedPostList(limit, page),
     {
@@ -55,7 +53,7 @@ const PaginationPostListPage = () => {
 
   return (
     <>
-      <PostList posts={posts} isLoading={isLoading} />
+      <PostList posts={posts} isLoading={isFetching} />
       <Pagination
         count={totalPages}
         page={page}
