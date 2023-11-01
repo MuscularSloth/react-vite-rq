@@ -34,7 +34,7 @@ const PaginationPostListPage = () => {
   const {query} = useRequestPosts();
 
   const {data, isLoading, isError, isFetching} = query(
-    ['posts', limit, page],
+    ['posts-pagination', limit, page],
     () => fetchPaginatedPostList(limit, page),
     {
       enabled: true,
