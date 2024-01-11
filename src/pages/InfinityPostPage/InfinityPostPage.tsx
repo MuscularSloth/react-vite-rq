@@ -21,6 +21,7 @@ const InfinityPostPage = () => {
     enabled: true,
     cacheTime: 1000 * 60 * 60,
     refetchOnWindowFocus: false,
+    networkMode: 'offlineFirst',
   });
 
   const allPosts = data?.pages?.reduce<Post[]>((acc, page) => {
